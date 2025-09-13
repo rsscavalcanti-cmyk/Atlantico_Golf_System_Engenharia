@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atlântico Golf – Status da Obra</title>
+  <meta name="description" content="Página única premium (dark/mobile-first) com filtros por disciplina para o status da obra Atlântico Golf." />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root{
+      /* Dark palette */
+      --bg:#0f141a;
+      --bg2:#171e26;
+      --card:#1b232d;
+      --stroke:#283241;
+      --text:#e6edf3;
+      --muted:#9fb0c3;
+      --azul:#4ea1ff;      /* concluído (azul mais vivo em dark) */
+      --vermelho:#ff5a5f;  /* em execução */
+      --verde:#62d2a2;     /* acento */
+      --radius:16px;
+      --shadow:0 16px 40px rgba(0,0,0,.35);
+      --container:1080px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    img{max-width:100%;display:block;border-radius:14px}
+    a{color:var(--azul);text-decoration:none}
+
+    /* Mobile-first layout */
+    .container{max-width:var(--container);margin:0 auto;padding:0 16px}
+    section{padding:68px 0}
+    h1,h2{font-family:Montserrat,Inter,Arial,sans-serif}
+    h2{color:var(--azul);font-size:1.25rem;margin:0 0 12px}
+    .grid{display:grid;gap:14px}
+    .card{background:var(--card);border:1px solid var(--stroke);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    .meta{color:var(--muted);font-size:.92rem}
+
+    /* Top nav (fixo) */
+    .topnav{position:sticky;top:0;z-index:50;background:rgba(15,20,26,.75);backdrop-filter:blur(10px);border-bottom:1px solid var(--stroke)}
+    .topnav .inner{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 16px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--azul)}
+    .actions{display:flex;align-items:center;gap:8px}
+    .btn{background:#10161d;border:1px solid var(--stroke);color:var(--text);padding:8px 12px;border-radius:12px;font-weight:600;cursor:pointer}
+    .btn.primary{background:var(--azul);border-color:transparent;color:#0b1117}
+
+    /* Filter bar */
+    .filters{display:flex;gap:8px;overflow:auto;padding:8px 16px;border-bottom:1px solid var(--stroke);background:rgba(15,20,26,.75)}
+    .chip{white-space:nowrap;padding:8px 12px;border-radius:999px;border:1px solid var(--stroke);color:var(--muted);cursor:pointer}
+    .chip.active{background:var(--azul);color:#0b1117;border-color:transparent}
+
+    /* Hero */
+    header.hero{position:relative;padding:80px 0 40px;background:radial-gradient(1200px 500px at 50% -10%, rgba(78,161,255,.25), transparent 60%)}
+    header.hero h1{font-weight:800;margin:0 0 8px;font-size:clamp(1.4rem,2.8vw,2.4rem)}
+    header.hero p{margin:0 0 16px;color:var(--muted)}
+    .kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .kpi .box{background:var(--bg2);border:1px solid var(--stroke);border-radius:14px;padding:12px;text-align:center}
+    .kpi strong{display:block;font-size:.85rem;color:var(--muted)}
+    .kpi .val{font-weight:800;font-size:1.2rem}
+
+    /* Andamento + pizza */
+    .andamento-grid{display:grid;grid-template-columns:1fr;gap:14px}
+    .andamento-card{display:grid;gap:10px}
+    .andamento-flex{display:grid;grid-template-columns:1fr 140px;gap:12px;align-items:center}
+    .badge{display:inline-block;background:#0e1a24;border:1px solid var(--stroke);color:var(--muted);font-weight:600;padding:6px 10px;border-radius:999px;font-size:.8rem}
+    .pizza-legenda{font-size:.82rem;color:var(--muted)}
+    .video-wrap{position:relative;width:100%;padding-top:56.25%;border-radius:14px;overflow:hidden;border:1px solid var(--stroke)}
+    .video-wrap iframe,.video-wrap video{position:absolute;inset:0;width:100%;height:100%}
+
+    /* Cronograma */
+    .timeline{background:var(--card);border:1px solid var(--stroke);border-radius:var(--radius);padding:16px}
+    .bar{height:14px;background:#0e1a24;border-radius:9px;overflow:hidden;margin-top:10px;border:1px solid var(--stroke)}
+    .bar-fill{height:100%;background:linear-gradient(90deg,var(--azul),var(--verde));width:65%}
+
+    /* Gate (senha) */
+    #gate{position:fixed;inset:0;background:linear-gradient(180deg, rgba(0,0,0,.65), rgba(0,0,0,.65));display:grid;place-items:center;z-index:9999}
+    #gate .box{background:var(--card);border:1px solid var(--stroke);border-radius:18px;padding:24px;box-shadow:var(--shadow);max-width:420px;width:90%}
+    #gate h1{margin:0 0 6px;font-size:1.2rem;color:var(--azul);font-weight:800}
+    #gate p{margin:0 0 12px;color:var(--muted)}
+    #gate input{width:100%;padding:12px 14px;border:1px solid var(--stroke);background:#0e141a;color:var(--text);border-radius:12px;margin-bottom:10px;font-size:1rem}
+    #gate button{width:100%;padding:12px 14px;border:none;border-radius:12px;background:var(--azul);color:#0b1117;font-weight:800;cursor:pointer}
+    #gate small{display:block;margin-top:8px;color:var(--muted)}
+
+    /* Desktop upgrades */
+    @media(min-width:760px){
+      .kpi{grid-template-columns:repeat(4,1fr)}
+      .andamento-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(min-width:1040px){
+      .andamento-grid{grid-template-columns:repeat(3,1fr)}
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Nav (fixo) -->
+  <nav class="topnav" role="navigation" aria-label="Menu principal">
+    <div class="inner container">
+      <div class="brand"><span class="dot"></span> Atlântico Golf</div>
+      <div class="actions">
+        <a class="btn" href="#concluidos">Concluídos</a>
+        <a class="btn" href="#andamento">Em execução</a>
+        <a class="btn" href="#bloqueados">Bloqueados</a>
+        <a class="btn" href="#cronograma">Cronograma</a>
+      </div>
+    </div>
+    <div class="filters" id="filters" aria-label="Filtros por disciplina">
+      <div class="chip active" data-filter="all">Todas</div>
+      <div class="chip" data-filter="eletrica">Elétrica</div>
+      <div class="chip" data-filter="hidraulica">Hidráulica</div>
+      <div class="chip" data-filter="spda">SPDA</div>
+      <div class="chip" data-filter="infra">Infra</div>
+      <div class="chip" data-filter="acabamento">Acabamentos</div>
+    </div>
+  </nav>
+
+  <!-- Gate de senha -->
+  <div id="gate" aria-modal="true" role="dialog">
+    <div class="box">
+      <h1>Acesso restrito</h1>
+      <p>Insira a senha para visualizar o status da obra.</p>
+      <input id="gateInput" type="password" placeholder="Senha de acesso" aria-label="Senha de acesso" />
+      <button id="gateBtn" type="button">Entrar</button>
+      <small>Senha padrão: System204060 (altere no código).</small>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <header class="hero" role="banner">
+    <div class="container">
+      <h1>Atlântico Golf – Status da Obra</h1>
+      <p>Visão técnica e comercial em dark mode, otimizada para celular, com filtros por disciplina.</p>
+      <div class="kpi" aria-label="Indicadores principais">
+        <div class="box"><strong>Concluído</strong><span class="val" id="kpiDone">65%</span></div>
+        <div class="box"><strong>Em execução</strong><span class="val" id="kpiRun">35%</span></div>
+        <div class="box"><strong>Prazo base</strong><span class="val">Nov/2025</span></div>
+        <div class="box"><strong>Prazo estendido</strong><span class="val">Mai/2026</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Concluídos -->
+  <section id="concluidos" aria-labelledby="h-concluidos">
+    <div class="container">
+      <h2 id="h-concluidos">✔ Serviços Concluídos Recentemente</h2>
+      <div class="grid">
+        <article class="card" data-disciplina="acabamento">
+          <img loading="lazy" src="./assets/img/concluidos/interruptores_tomadas.jpg" alt="Interruptores e tomadas instalados nas torres"/>
+          <h3>Interruptores e tomadas das torres</h3>
+          <p class="meta">Instalações finalizadas e testadas, prontas para uso.</p>
+        </article>
+        <article class="card" data-disciplina="acabamento">
+          <img loading="lazy" src="./assets/img/concluidos/loucas_torres.jpg" alt="Louças instaladas nos apartamentos"/>
+          <h3>Louças das torres</h3>
+          <p class="meta">Conjunto de peças instalado e validado nos apartamentos.</p>
+        </article>
+        <article class="card" data-disciplina="hidraulica">
+          <img loading="lazy" src="./assets/img/concluidos/hidrometros.jpg" alt="Hidrômetros instalados e calibrados"/>
+          <h3>Hidrômetros</h3>
+          <p class="meta">Equipamentos posicionados e calibrados, garantindo aferição de consumo.</p>
+        </article>
+        <article class="card" data-disciplina="eletrica">
+          <img loading="lazy" src="./assets/img/concluidos/barramentos_etapa1.jpg" alt="Primeira etapa dos barramentos blindados concluída"/>
+          <h3>1ª etapa dos barramentos blindados</h3>
+          <p class="meta">Estruturas principais concluídas e entregues.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Em execução (pizzas + 3 vídeos) -->
+  <section id="andamento" aria-labelledby="h-andamento">
+    <div class="container">
+      <h2 id="h-andamento">⏳ Serviços em Execução <span class="badge">● azul = concluído • ● vermelho = em execução</span></h2>
+      <div class="andamento-grid" id="andamentoGrid">
+        <!-- Cada card com data-disciplina para filtros -->
+        <article class="card andamento-card" data-disciplina="eletrica">
+          <img loading="lazy" src="./assets/img/andamento/quadros_bombas.jpg" alt="Instalação de quadros de bombas" />
+          <div class="andamento-flex">
+            <div>
+              <strong>Instalação de quadros de bombas</strong>
+              <p>Posicionamento e conexões em andamento.</p>
+              <div class="pizza-legenda">Concluído 40% • Restante 60%</div>
+            </div>
+            <canvas class="pizza" width="140" height="140" data-done="40" aria-label="Pizza quadros de bombas 40% concluído"></canvas>
+          </div>
+          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/SEU_ID_AQUI" title="Vídeo quadros de bombas" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+        </article>
+
+        <article class="card andamento-card" data-disciplina="eletrica">
+          <img loading="lazy" src="./assets/img/andamento/qgbts.jpg" alt="Montagem de QGBTs" />
+          <div class="andamento-flex">
+            <div>
+              <strong>QGBTs (Quadros Gerais de Baixa Tensão)</strong>
+              <p>Montagem parcial e interligações progressivas.</p>
+              <div class="pizza-legenda">Concluído 45% • Restante 55%</div>
+            </div>
+            <canvas class="pizza" width="140" height="140" data-done="45" aria-label="Pizza QGBTs 45% concluído"></canvas>
+          </div>
+        </article>
+
+        <article class="card andamento-card" data-disciplina="eletrica">
+          <img loading="lazy" src="./assets/img/andamento/paineis_parciais.jpg" alt="Painéis parciais" />
+          <div class="andamento-flex">
+            <div>
+              <strong>Painéis parciais</strong>
+              <p>Ensaios e ajustes em execução.</p>
+              <div class="pizza-legenda">Concluído 35% • Restante 65%</div>
+            </div>
+            <canvas class="pizza" width="140" height="140" data-done="35" aria-label="Pizza painéis parciais 35% concluído"></canvas>
+          </div>
+        </article>
+
+        <article class="card andamento-card" data-disciplina="infra">
+          <img loading="lazy" src="./assets/img/andamento/infra_forca.jpg" alt="Infraestrutura de força" />
+          <div class="andamento-flex">
+            <div>
+              <strong>Infraestrutura de força</strong>
+              <p>Lançamento de eletrocalhas e conduítes estruturais.</p>
+              <div class="pizza-legenda">Concluído 50% • Restante 50%</div>
+            </div>
+            <canvas class="pizza" width="140" height="140" data-done="50" aria-label="Pizza infraestrutura de força 50% concluído"></canvas>
+          </div>
+        </article>
+
+        <article class="card andamento-card" data-disciplina="eletrica">
+          <img loading="lazy" src="./assets/img/andamento/alimentacao_forca.jpg" alt="Alimentação de força" />
+          <div class="andamento-flex">
+            <div>
+              <strong>Alimentação de força</strong>
+              <p>Circuitos principais em implantação.</p>
+              <div class="pizza-legenda">Concluído 30% • Restante 70%</div>
+            </div>
+            <canvas class="pizza" width="140" height="140" data-done="30" aria-label="Pizza alimentação de força 30% concluído"></canvas>
+          </div>
+        </article>
+
+        <article class="card andamento-card" data-disciplina="eletrica">
+          <img loading="lazy" src="./assets/img/andamento/iluminacao_externa.jpg" alt="Iluminação externa" />
+          <div class="andamento-flex">
+            <div>
+              <strong>Iluminação externa</strong>
+              <p>Montagem e testes iniciais em áreas comuns.</p>
+              <div class="pizza-legenda">Concluído 20% • Restante 80%</div>
+            </div>
+            <canvas class="pizza" width="140" height="140" data-done="20" aria-label="Pizza iluminação externa 20% concluído"></canvas>
+          </div>
+        </article>
+
+        <article class="card andamento-card" data-disciplina="hidraulica">
+          <img loading="lazy" src="./assets/img/andamento/ralos_terreo.jpg" alt="Redes hidráulicas de ralos do térreo" />
+          <div class="andamento-flex">
+            <div>
+              <strong>Redes hidráulicas de ralos do térreo</strong>
+              <p>Instalações de coleta e escoamento em execução.</p>
+              <div class="pizza-legenda">Concluído 55% • Restante 45%</div>
+            </div>
+            <canvas class="pizza" width="140" height="140" data-done="55" aria-label="Pizza ralos térreo 55% concluído"></canvas>
+          </div>
+        </article>
+
+        <article class="card andamento-card" data-disciplina="acabamento">
+          <img loading="lazy" src="./assets/img/andamento/metais_apartamentos.jpg" alt="Metais dos apartamentos" />
+          <div class="andamento-flex">
+            <div>
+              <strong>Metais dos apartamentos</strong>
+              <p>Montagem de torneiras, registros e acabamentos.</p>
+              <div class="pizza-legenda">Concluído 60% • Restante 40%</div>
+            </div>
+            <canvas class="pizza" width="140" height="140" data-done="60" aria-label="Pizza metais 60% concluído"></canvas>
+          </div>
+        </article>
+
+        <article class="card andamento-card" data-disciplina="hidraulica">
+          <img loading="lazy" src="./assets/img/andamento/piscinas_espelhos.jpg" alt="Redes de piscinas e espelhos d’água" />
+          <div class="andamento-flex">
+            <div>
+              <strong>Redes de piscinas e espelhos d’água</strong>
+              <p>Conexões hidráulicas em desenvolvimento.</p>
+              <div class="pizza-legenda">Concluído 25% • Restante 75%</div>
+            </div>
+            <canvas class="pizza" width="140" height="140" data-done="25" aria-label="Pizza piscinas 25% concluído"></canvas>
+          </div>
+        </article>
+
+        <article class="card andamento-card" data-disciplina="hidraulica">
+          <img loading="lazy" src="./assets/img/andamento/recalque_pluvial_subsolo.jpg" alt="Redes de recalque de águas pluviais do subsolo" />
+          <div class="andamento-flex">
+            <div>
+              <strong>Redes de recalque de águas pluviais do subsolo</strong>
+              <p>Instalação das bombas e linhas principais.</p>
+              <div class="pizza-legenda">Concluído 30% • Restante 70%</div>
+            </div>
+            <canvas class="pizza" width="140" height="140" data-done="30" aria-label="Pizza recalque pluvial 30% concluído"></canvas>
+          </div>
+        </article>
+
+        <!-- vídeos chave 2/3 e 3/3 -->
+        <article class="card andamento-card" data-disciplina="qualidade">
+          <img loading="lazy" src="./assets/img/andamento/entregas_qualidade.jpg" alt="Entregas de apartamentos para qualidade" />
+          <div class="andamento-flex">
+            <div>
+              <strong>Entregas de apartamentos para qualidade (serviço crítico)</strong>
+              <p>Unidades em processo de vistoria técnica.</p>
+              <div class="pizza-legenda">Concluído 15% • Restante 85%</div>
+            </div>
+            <canvas class="pizza" width="140" height="140" data-done="15" aria-label="Pizza entregas qualidade 15% concluído"></canvas>
+          </div>
+          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/SEU_ID_AQUI" title="Vídeo entregas qualidade" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+        </article>
+
+        <article class="card andamento-card" data-disciplina="spda">
+          <img loading="lazy" src="./assets/img/andamento/spda_torres.jpg" alt="SPDA das torres" />
+          <div class="andamento-flex">
+            <div>
+              <strong>SPDA das torres</strong>
+              <p>Captação e descidas em execução; equalização e ensaios programados.</p>
+              <div class="pizza-legenda">Concluído 40% • Restante 60%</div>
+            </div>
+            <canvas class="pizza" width="140" height="140" data-done="40" aria-label="Pizza SPDA 40% concluído"></canvas>
+          </div>
+          <div class="video-wrap"><iframe src="https://www.youtube.com/embed/SEU_ID_AQUI" title="Vídeo SPDA" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bloqueados -->
+  <section id="bloqueados" aria-labelledby="h-bloqueados">
+    <div class="container">
+      <h2 id="h-bloqueados">⛔ Serviços Bloqueados (Patrimar)</h2>
+      <div class="grid">
+        <article class="card" data-disciplina="eletrica">
+          <img loading="lazy" src="./assets/img/bloqueados/cabos_240mm.jpg" alt="Compra de cabos 240 mm² aguardando" />
+          <h3>Cabos 240 mm²</h3>
+          <p class="meta">Dependência de compra pelo cliente.</p>
+        </article>
+        <article class="card" data-disciplina="eletrica">
+          <img loading="lazy" src="./assets/img/bloqueados/barramentos_sem_previsao.jpg" alt="Barramentos blindados sem previsão" />
+          <h3>Barramentos blindados</h3>
+          <p class="meta">Entrega sem previsão.</p>
+        </article>
+        <article class="card" data-disciplina="eletrica">
+          <img loading="lazy" src="./assets/img/bloqueados/entrada_energia_componentes.jpg" alt="Definição de componentes para entrada de energia" />
+          <h3>Entrada de energia</h3>
+          <p class="meta">Definição de componentes pendente.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Desafios -->
+  <section id="desafios" aria-labelledby="h-desafios">
+    <div class="container">
+      <h2 id="h-desafios">⚠️ Desafios Atuais</h2>
+      <article class="card">
+        <ul>
+          <li>Indefinições do cliente atrasando suprimentos críticos</li>
+          <li>Roubo de cabos – impacto <strong>R$ 95.000</strong></li>
+          <li>Retrabalhos – ajustes em painéis – <strong>R$ 20.000</strong></li>
+          <li>Recolocação de tomadas e itens furtados – <strong>R$ 35.000</strong></li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- Equipe -->
+  <section id="equipe" aria-labelledby="h-equipe">
+    <div class="container">
+      <h2 id="h-equipe">👷 Equipe Atual</h2>
+      <article class="card">
+        <img loading="lazy" src="./assets/img/equipe/time_2025-09.jpg" alt="Equipe System Engenharia na obra" />
+        <ul class="meta">
+          <li>Engenheiro Responsável: Renato S. Cavalcanti</li>
+          <li>Encarregado Geral: Enivaldo</li>
+          <li>Eletricistas: 18</li>
+          <li>Bombeiros hidráulicos: 12</li>
+          <li>Almoxarifes: 2</li>
+          <li>Auxiliares gerais: 10</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- Cronograma -->
+  <section id="cronograma" aria-labelledby="h-cronograma">
+    <div class="container">
+      <h2 id="h-cronograma">📅 Cronograma</h2>
+      <div class="timeline" role="group" aria-label="Progresso geral">
+        <p class="meta">Término previsto: <strong>Novembro/2025</strong> • Possível extensão: <strong>Maio/2026</strong></p>
+        <div class="bar" aria-hidden="true"><div class="bar-fill" id="globalProgress"></div></div>
+        <small class="meta" id="globalProgressText">Progresso estimado: 65%</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer role="contentinfo" class="topnav" style="position:static">
+    <div class="inner container" style="justify-content:center">
+      <div class="meta">© System Engenharia • Última atualização: <span id="lastUpdate">—</span></div>
+    </div>
+  </footer>
+
+  <script>
+    // ====== SETTINGS ======
+    const ACCESS_CODE = 'System204060';
+    const GLOBAL_PROGRESS = 65;
+    const KPIS = { done: 65, run: 35 };
+
+    // KPIs/Cronograma
+    document.getElementById('kpiDone').textContent = KPIS.done + '%';
+    document.getElementById('kpiRun').textContent = KPIS.run + '%';
+    document.getElementById('globalProgress').style.width = GLOBAL_PROGRESS + '%';
+    document.getElementById('globalProgressText').textContent = 'Progresso estimado: ' + GLOBAL_PROGRESS + '%';
+    document.getElementById('lastUpdate').textContent = new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
+
+    // ====== Senha (gate) ======
+    const gate = document.getElementById('gate');
+    const gateInput = document.getElementById('gateInput');
+    const gateBtn = document.getElementById('gateBtn');
+    function tryOpen(){
+      const ok = (gateInput.value || '').trim() === ACCESS_CODE;
+      gate.style.display = ok ? 'none' : 'grid';
+      if(!ok){ gateInput.focus(); }
+    }
+    gateBtn.addEventListener('click', tryOpen);
+    gateInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ tryOpen(); }});
+
+    // ====== Charts (pizzas) ======
+    const centerText = { id:'centerText', afterDraw(chart){
+      const {ctx} = chart; const ds = chart.data.datasets[0]; if(!ds) return;
+      const done = ds.data?.[0] ?? 0; const meta = chart.getDatasetMeta(0); if(!meta?.data?.[0]) return;
+      const {x,y} = meta.data[0]; ctx.save(); ctx.font='700 16px Montserrat, Arial'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle='#e6edf3'; ctx.fillText(done+'%', x, y); ctx.restore();
+    }};
+    const pieOpts = { responsive:false, plugins:{ legend:{display:false}, tooltip:{callbacks:{ label:(c)=> `${c.label}: ${c.parsed}%` }}}, elements:{ arc:{ borderColor:'#0f141a', borderWidth:2 }}};
+    document.querySelectorAll('canvas.pizza').forEach((cv)=>{
+      const done = Number(cv.dataset.done || 0); const restante = Math.max(0,100-done);
+      new Chart(cv.getContext('2d'), { type:'pie', data:{ labels:['Concluído','Em execução'], datasets:[{ data:[done,restante], backgroundColor:['var(--azul)','var(--vermelho)'] }] }, options:pieOpts, plugins:[centerText] });
+    });
+
+    // ====== Filtros por disciplina ======
+    const chips = document.querySelectorAll('.chip');
+    const cards = document.querySelectorAll('[data-disciplina]');
+    chips.forEach(chip=> chip.addEventListener('click', ()=>{
+      chips.forEach(c=>c.classList.remove('active')); chip.classList.add('active');
+      const f = chip.dataset.filter;
+      cards.forEach(card=>{
+        const d = card.dataset.disciplina;
+        card.style.display = (f==='all' || d===f) ? '' : 'none';
+      });
+    }));
+  </script>
+</body>
+</html>
