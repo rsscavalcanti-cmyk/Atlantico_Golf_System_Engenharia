@@ -212,7 +212,7 @@
             <div>
               <strong>Infraestrutura de força</strong>
               <div class="meta">Eixos e shafts</div>
-              <p>Lançamento de eletrocalhas e conduítes estruturais.</p>
+              <p>Lançamento de eletrocalhas para as interligações.</p>
               <div class="pizza-legenda">Concluído 50% • Restante 50%</div>
             </div>
             <canvas class="pizza" width="240" height="240" data-done="50" aria-label="Pizza infraestrutura de força 50% concluído"></canvas>
@@ -225,10 +225,10 @@
             <div>
               <strong>Iluminação externa</strong>
               <div class="meta">Áreas comuns externas</div>
-              <p>Montagem e testes iniciais.</p>
-              <div class="pizza-legenda">Concluído 45% • Restante 55%</div>
+              <p>Execução de infraestrutura para passagem de cabos de ligação.</p>
+              <div class="pizza-legenda">Concluído 25% • Restante 75%</div>
             </div>
-            <canvas class="pizza" width="240" height="240" data-done="45" aria-label="Pizza iluminação externa 45% concluído"></canvas>
+            <canvas class="pizza" width="240" height="240" data-done="25" aria-label="Pizza iluminação externa 25% concluído"></canvas>
           </div>
         </article>
 
@@ -238,7 +238,7 @@
             <div>
               <strong>Redes hidráulicas de ralos do térreo</strong>
               <div class="meta">Térreo</div>
-              <p>Instalações de coleta e escoamento em execução.</p>
+              <p>Execução das redes e interligações pelo subsolo.</p>
               <div class="pizza-legenda">Concluído 60% • Restante 40%</div>
             </div>
             <canvas class="pizza" width="240" height="240" data-done="60" aria-label="Pizza ralos térreo 60% concluído"></canvas>
@@ -252,9 +252,9 @@
               <strong>Metais dos apartamentos</strong>
               <div class="meta">Unidades</div>
               <p>Montagem de torneiras, registros e acabamentos.</p>
-              <div class="pizza-legenda">Concluído 52% • Restante 48%</div>
+              <div class="pizza-legenda">Concluído 60% • Restante 40%</div>
             </div>
-            <canvas class="pizza" width="240" height="240" data-done="52" aria-label="Pizza metais 52% concluído"></canvas>
+            <canvas class="pizza" width="240" height="240" data-done="60" aria-label="Pizza metais 60% concluído"></canvas>
           </div>
         </article>
 
@@ -264,10 +264,10 @@
             <div>
               <strong>Redes de piscinas e espelhos d’água</strong>
               <div class="meta">Lazer</div>
-              <p>Conexões hidráulicas em desenvolvimento.</p>
-              <div class="pizza-legenda">Concluído 25% • Restante 75%</div>
+              <p>Em fase de conclusão.</p>
+              <div class="pizza-legenda">Concluído 90% • Restante 10%</div>
             </div>
-            <canvas class="pizza" width="240" height="240" data-done="25" aria-label="Pizza piscinas 25% concluído"></canvas>
+            <canvas class="pizza" width="240" height="240" data-done="90" aria-label="Pizza piscinas 90% concluído"></canvas>
           </div>
         </article>
 
@@ -278,9 +278,9 @@
               <strong>Redes de recalque de águas pluviais do subsolo</strong>
               <div class="meta">Subsolo</div>
               <p>Instalação das bombas e linhas principais.</p>
-              <div class="pizza-legenda">Concluído 38% • Restante 62%</div>
+              <div class="pizza-legenda">Concluído 30% • Restante 70%</div>
             </div>
-            <canvas class="pizza" width="240" height="240" data-done="38" aria-label="Pizza recalque 38% concluído"></canvas>
+            <canvas class="pizza" width="240" height="240" data-done="30" aria-label="Pizza recalque 30% concluído"></canvas>
           </div>
         </article>
 
@@ -370,9 +370,9 @@
       <article class="card">
         <ul>
           <li>Indefinições do cliente atrasando suprimentos críticos</li>
-          <li>Roubo de cabos – impacto <strong>R$ 95.000</strong></li>
-          <li>Retrabalhos – ajustes em painéis – <strong>R$ 20.000</strong></li>
-          <li>Recolocação de tomadas e itens furtados – <strong>R$ 35.000</strong></li>
+          <li>Roubo de cabos</li>
+          <li>Retrabalho</li>
+          <li>Recolocação de tomadas e itens furtados</li>
         </ul>
       </article>
     </div>
@@ -381,5 +381,92 @@
   <!-- EQUIPE -->
   <section id="equipe" aria-labelledby="h-equipe">
     <div class="container">
-      <h2 id="h-equipe">👷 Equipe Atual</h2>
-     
+      <h2 id="h-equipe">👷 Time Atual</h2>
+      <article class="card">
+        <ul>
+          <li>55 profissionais na equipe direta e 10 indiretos</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- CRONOGRAMA -->
+  <section id="cronograma" aria-labelledby="h-cronograma">
+    <div class="container">
+      <h2 id="h-cronograma">📅 Cronograma</h2>
+      <div class="timeline">
+        <div class="meta">Término previsto: <strong>Nov/2025</strong> • Possível extensão: <strong>Mai/2026</strong></div>
+        <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="65" aria-label="Progresso global 65%">
+          <div class="bar-fill" style="width:65%"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <small>© <span id="yr"></span> System Engenharia — Status da Obra Atlântico Golf.</small>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- PIZZAS: renderização Chart.js -->
+  <script>
+    // pega cores da paleta do :root
+    function getCss(varName){
+      return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    }
+
+    // plugin para escrever o percentual no centro do gráfico
+    const centerText = {
+      id: 'centerText',
+      afterDraw(chart){
+        const {ctx} = chart; const ds = chart.data.datasets?.[0]; if(!ds) return;
+        const done = ds.data?.[0] ?? 0;
+        const meta = chart.getDatasetMeta(0); if(!meta?.data?.[0]) return;
+        const {x,y} = meta.data[0];
+        ctx.save();
+        ctx.font = '700 28px Montserrat, Arial, sans-serif';
+        ctx.fillStyle = '#2a2f36';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(done + '%', x, y);
+        ctx.restore();
+      }
+    };
+
+    // opções padrão (borda branca entre fatias, sem legenda)
+    const pieOpts = {
+      responsive: false,             // usamos tamanho fixo p/ TV
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: (ctx)=> `${ctx.label}: ${ctx.parsed}%` } }
+      },
+      elements: { arc: { borderColor: '#fff', borderWidth: 3 } },
+      animation: { animateRotate: true, duration: 900 }
+    };
+
+    // inicializa TODAS as pizzas da página
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('canvas.pizza').forEach(cv => {
+        const done = Number(cv.dataset.done || 0);
+        const restante = Math.max(0, 100 - done);
+        new Chart(cv.getContext('2d'), {
+          type: 'pie',
+          data: {
+            labels: ['Concluído','Em execução'],
+            datasets: [{
+              data: [done, restante],
+              backgroundColor: [getCss('--pie-concluido'), getCss('--pie-execucao')]
+            }]
+          },
+          options: pieOpts,
+          plugins: [centerText]
+        });
+      });
+    });
+  </script>
+</body>
+</html>
