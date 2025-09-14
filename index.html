@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Atlântico Golf – Status da Obra (TV)</title>
-  <meta name="description" content="Página única otimizada para exibição em TV/PC: tipografia ampliada, espaçamentos generosos e gráficos dimensionados, preservando caminhos de imagens já configurados." />
+  <meta name="description" content="Página única otimizada para exibição em TV: tipografia ampliada, espaçamentos generosos e gráficos dimensionados." />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     /* =========================
-       PALETA 60/30/10 p/ TV/PC
+       PALETA 60/30/10 p/ TV
        ========================= */
     :root{
       /* 60% Dominante */
@@ -22,8 +22,8 @@
       --destaque-2:#6fb08a;   /* verde apoio */
 
       /* Gráficos semânticos */
-      --pie-concluido:#005b96; /* azul = concluído */
-      --pie-execucao:#d9534f; /* vermelho = em execução/restante */
+      --pie-concluido:#005b96; /* azul */
+      --pie-execucao:#d9534f; /* vermelho */
 
       --branco:#ffffff;
       --grafite:#1f252b;      /* leve aumento de contraste p/ TV */
@@ -82,12 +82,7 @@
     /* Cronograma */
     .timeline{background:var(--branco);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--pad-card);border:1px solid var(--secundaria)}
     .bar{height:24px;background:var(--secundaria);border-radius:12px;overflow:hidden;margin-top:16px}
-    .bar-fill{height:100%;background:linear-gradient(90deg,var(--destaque),var(--destaque-2));width:80%} /* Obra geral 80% */
-
-    /* Equipe */
-    .team-grid{display:grid;grid-template-columns:repeat(4,minmax(240px,1fr));gap:var(--gap-xl)}
-    .team-card h3{margin:0 0 6px;color:var(--destaque)}
-    .chip{display:inline-block;margin:6px 6px 0 0;padding:6px 10px;border-radius:999px;background:#eef4fa;border:1px solid #d6e5f5;font-size:0.95rem}
+    .bar-fill{height:100%;background:linear-gradient(90deg,var(--destaque),var(--destaque-2));width:65%}
 
     /* Rodapé */
     footer{background:var(--branco);border-top:1px solid var(--secundaria);padding:32px 0;color:var(--secundaria-text)}
@@ -96,15 +91,10 @@
     @media(max-width:1400px){
       .status-grid{grid-template-columns:repeat(3, minmax(280px,1fr))}
       .andamento-grid{grid-template-columns:repeat(2, minmax(320px,1fr))}
-      .team-grid{grid-template-columns:repeat(3,minmax(240px,1fr))}
     }
     @media(max-width:980px){
       .status-grid{grid-template-columns:repeat(2, minmax(260px,1fr))}
       .andamento-grid{grid-template-columns:1fr}
-      .team-grid{grid-template-columns:repeat(2,minmax(220px,1fr))}
-    }
-    @media(max-width:640px){
-      .team-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -113,10 +103,10 @@
   <header class="hero" role="banner">
     <div class="container">
       <h1>Atlântico Golf – Status da Obra</h1>
-      <p>Visão técnica e comercial otimizada para TV/PC: concluídos, em execução, bloqueios, desafios, equipe e cronograma.</p>
+      <p>Visão técnica e comercial otimizada para TV: concluídos, em execução, bloqueios, desafios, equipe e cronograma.</p>
       <div class="kpi" aria-label="Indicadores principais">
-        <div class="box"><strong>Obra em geral (executado)</strong><span class="val" id="kpiDone">80%</span></div>
-        <div class="box"><strong>Em execução (estimado)</strong><span class="val" id="kpiRun">20%</span></div>
+        <div class="box"><strong>Concluído</strong><span class="val" id="kpiDone">65%</span></div>
+        <div class="box"><strong>Em execução</strong><span class="val" id="kpiRun">35%</span></div>
         <div class="box"><strong>Prazo base</strong><span class="val">Nov/2025</span></div>
         <div class="box"><strong>Prazo estendido</strong><span class="val">Mai/2026</span></div>
       </div>
@@ -155,7 +145,7 @@
   <!-- EM ANDAMENTO (pizzas + 3 vídeos) -->
   <section id="andamento" aria-labelledby="h-andamento">
     <div class="container">
-      <h2 id="h-andamento">⏳ Serviços em Andamento <span class="badge">● azul = concluído • ● vermelho = restante</span></h2>
+      <h2 id="h-andamento">⏳ Serviços em Andamento <span class="badge">● azul = concluído • ● vermelho = em execução</span></h2>
       <div class="andamento-grid">
         <!-- 1/3 com vídeo -->
         <article class="card andamento-card">
@@ -172,19 +162,19 @@
           <div class="video-wrap" aria-label="Vídeo quadros de bombas (1 de 3)"><iframe src="https://www.youtube.com/embed/SEU_ID_AQUI" title="Vídeo quadros de bombas" frameborder="0" allowfullscreen></iframe></div>
         </article>
 
-        <!-- 2/3 com vídeo: Painéis e cabos (30% executado) -->
+        <!-- 2/3 com vídeo -->
         <article class="card andamento-card">
-          <img loading="lazy" src="assets/img/andamento/paineis_parciais.jpg" alt="Painéis e cabos – ensaios e ajustes" />
+          <img loading="lazy" src="assets/img/andamento/paineis_parciais.jpg" alt="Painéis parciais – ensaios e ajustes" />
           <div class="andamento-flex">
             <div>
-              <strong>Painéis e cabos em geral</strong>
+              <strong>Painéis parciais</strong>
               <div class="meta">Diversos</div>
-              <p>Ensaios, lançamentos e ajustes em execução.</p>
-              <div class="pizza-legenda">Concluído <span data-bind="p3">30</span>% • Restante <span data-bind="r3">70</span>%</div>
+              <p>Ensaios e ajustes em execução.</p>
+              <div class="pizza-legenda">Concluído <span data-bind="p3">35</span>% • Restante <span data-bind="r3">65</span>%</div>
             </div>
-            <canvas class="pizza" width="240" height="240" data-done="30" aria-label="Pizza painéis e cabos 30% concluído"></canvas>
+            <canvas class="pizza" width="240" height="240" data-done="35" aria-label="Pizza painéis parciais 35% concluído"></canvas>
           </div>
-          <div class="video-wrap" aria-label="Vídeo painéis e cabos (2 de 3)"><iframe src="https://www.youtube.com/embed/SEU_ID_AQUI" title="Vídeo painéis e cabos" frameborder="0" allowfullscreen></iframe></div>
+          <div class="video-wrap" aria-label="Vídeo painéis parciais (2 de 3)"><iframe src="https://www.youtube.com/embed/SEU_ID_AQUI" title="Vídeo painéis parciais" frameborder="0" allowfullscreen></iframe></div>
         </article>
 
         <!-- 3/3 com vídeo -->
@@ -202,7 +192,7 @@
           <div class="video-wrap" aria-label="Vídeo alimentação de força (3 de 3)"><iframe src="https://www.youtube.com/embed/SEU_ID_AQUI" title="Vídeo alimentação de força" frameborder="0" allowfullscreen></iframe></div>
         </article>
 
-        <!-- Itens adicionais sem vídeo (mantidos os caminhos de imagem) -->
+        <!-- Itens adicionais sem vídeo -->
         <article class="card andamento-card">
           <img loading="lazy" src="assets/img/andamento/qgbt.jpg" alt="QGBTs – Quadros Gerais de Baixa Tensão" />
           <div class="andamento-flex">
@@ -368,4 +358,27 @@
           <img loading="lazy" src="assets/img/bloqueados/entrada_energia_componentes.jpg" alt="Definição de componentes para entrada de energia" />
           <h3>Entrada de energia</h3>
           <p class="meta">Definição de componentes pendente.</p>
-        </ar
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESAFIOS -->
+  <section id="desafios" aria-labelledby="h-desafios">
+    <div class="container">
+      <h2 id="h-desafios">⚠️ Desafios Atuais</h2>
+      <article class="card">
+        <ul>
+          <li>Indefinições do cliente atrasando suprimentos críticos</li>
+          <li>Roubo de cabos – impacto <strong>R$ 95.000</strong></li>
+          <li>Retrabalhos – ajustes em painéis – <strong>R$ 20.000</strong></li>
+          <li>Recolocação de tomadas e itens furtados – <strong>R$ 35.000</strong></li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- EQUIPE -->
+  <section id="equipe" aria-labelledby="h-equipe">
+    <div class="container">
+      <h2 id="h-equipe">👷 Equipe Atual</h2>
