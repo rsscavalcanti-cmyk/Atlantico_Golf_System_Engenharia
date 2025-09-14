@@ -85,6 +85,24 @@
     }
 
     footer{background:var(--branco);border-top:1px solid var(--secundaria);padding:32px 0;color:var(--secundaria-text)}
+    /* várias regras já existentes ... */
+
+    /* ==== Correção de alinhamento só para #desafios ==== */
+    #desafios .card{
+      text-align: left;
+      align-items: flex-start;
+    }
+
+    #desafios .card ul{
+      list-style: disc;
+      list-style-position: outside;
+      margin: 0 0 0 1.25rem;
+      padding-left: 0.25rem;
+    }
+
+    #desafios .card li{
+      margin: .35rem 0;
+    }
   </style>
 </head>
 <body>
@@ -92,10 +110,10 @@
   <header class="hero" role="banner">
     <div class="container">
       <h1>Atlântico Golf – Status da Obra</h1>
-      <p>Visão técnica e comercial otimizada para TV: concluídos, em execução, bloqueios, desafios, equipe e cronograma.</p>
+      <p>Painel de Andamento e Desafios – Atlântico Golf</p>
       <div class="kpi" aria-label="Indicadores principais">
-        <div class="box"><strong>Concluído</strong><span class="val" id="kpiDone">65%</span></div>
-        <div class="box"><strong>Em execução</strong><span class="val" id="kpiRun">35%</span></div>
+        <div class="box"><strong>Concluído</strong><span class="val" id="kpiDone">80%</span></div>
+        <div class="box"><strong>Em execução</strong><span class="val" id="kpiRun">20%</span></div>
         <div class="box"><strong>Prazo base</strong><span class="val">Nov/2025</span></div>
         <div class="box"><strong>Prazo estendido</strong><span class="val">Mai/2026</span></div>
       </div>
@@ -227,7 +245,7 @@
         <article class="card andamento-card">
           <img loading="lazy" src="assets/img/andamento/entregas_qualidade.jpg" alt="Entregas de apartamentos para qualidade" />
           <h3>Entregas de apartamentos para qualidade</h3>
-          <p class="andamento-desc">Unidades em processo de vistoria técnica.</p>
+          <p class="andamento-desc">Vistoria técnica rigorosa em andamento pela equipe de qualidade externa da Patrimar..</p>
           <canvas class="pizza" width="240" height="240" data-done="48" aria-label="Pizza entregas qualidade 48% concluído"></canvas>
           <div class="pizza-legenda">Concluído 48% • Restante 52%</div>
         </article>
