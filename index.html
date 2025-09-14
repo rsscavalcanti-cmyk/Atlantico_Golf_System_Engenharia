@@ -1,91 +1,409 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Atlântico Golf – Status da Obra (TV)</title>
-<meta name="description" content="Página única otimizada para exibição em TV: tipografia ampliada, espaçamentos generosos e gráficos dimensionados." />
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<style>
-:root{
---dominante:#f5f7fa;
---secundaria:#e7ecf2;
---secundaria-text:#55606c;
---destaque:#005b96;
---destaque-2:#6fb08a;
---pie-concluido:#005b96;
---pie-execucao:#d9534f;
---branco:#ffffff;
---grafite:#1f252b;
---radius:20px;
---shadow:0 14px 40px rgba(0,0,0,.08);
---container:1480px;
---fs-hero: clamp(2.2rem, 2.2vw + 1.6rem, 3.8rem);
---fs-h2: clamp(1.6rem, 1.2vw + 1.2rem, 2.4rem);
---fs-body: clamp(1.05rem, 0.5vw + 0.9rem, 1.35rem);
---fs-kpi: clamp(1.6rem, 1.6vw + 1rem, 2.6rem);
---pad-section: clamp(64px, 6vh, 96px);
---gap-xl: 28px;
---pad-card: 28px;
---pie-size: 240px;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atlântico Golf – Status da Obra (TV)</title>
+  <meta name="description" content="Página única otimizada para exibição em TV: tipografia ampliada, espaçamentos generosos e gráficos dimensionados." />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root{
+      --dominante:#f5f7fa;
+      --secundaria:#e7ecf2;
+      --secundaria-text:#55606c;
+      --destaque:#005b96;
+      --destaque-2:#6fb08a;
+      --pie-concluido:#005b96;
+      --pie-execucao:#d9534f;
+      --branco:#ffffff;
+      --grafite:#1f252b;
+      --radius:20px;
+      --shadow:0 14px 40px rgba(0,0,0,.08);
+      --container:1480px;
+      --fs-hero: clamp(2.2rem, 2.2vw + 1.6rem, 3.8rem);
+      --fs-h2: clamp(1.6rem, 1.2vw + 1.2rem, 2.4rem);
+      --fs-body: clamp(1.05rem, 0.5vw + 0.9rem, 1.35rem);
+      --fs-kpi: clamp(1.6rem, 1.6vw + 1rem, 2.6rem);
+      --pad-section: clamp(64px, 6vh, 96px);
+      --gap-xl: 28px;
+      --pad-card: 28px;
+      --pie-size: 240px;
+    }
 
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--dominante);color:var(--grafite);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.7}
+    h1,h2{font-family:Montserrat,Inter,Arial,sans-serif;letter-spacing:.2px}
+    h2{color:var(--destaque);font-size:var(--fs-h2);margin:0 0 18px}
+    p,li,small{font-size:var(--fs-body)}
+    img{max-width:100%;display:block;border-radius:16px}
+    section{padding:var(--pad-section) 0}
+    .container{max-width:var(--container);margin:0 auto;padding:0 32px}
+    .grid{display:grid;gap:var(--gap-xl)}
 
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--dominante);color:var(--grafite);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.7}
-h1,h2{font-family:Montserrat,Inter,Arial,sans-serif;letter-spacing:.2px}
-h2{color:var(--destaque);font-size:var(--fs-h2);margin:0 0 18px}
-p,li,small{font-size:var(--fs-body)}
-img{max-width:100%;display:block;border-radius:16px}
-section{padding:var(--pad-section) 0}
-.container{max-width:var(--container);margin:0 auto;padding:0 32px}
-.grid{display:grid;gap:var(--gap-xl)}
+    /* ====== CARDS CENTRADOS (aplica em TODOS os cards) ====== */
+    .card{background:var(--branco);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--pad-card);border:1px solid var(--secundaria);
+          display:flex;flex-direction:column;align-items:center;text-align:center}
+    .card h3{margin:10px 0 8px;color:var(--destaque);font-size:clamp(1.2rem, 0.8vw + 1.05rem, 1.6rem);font-weight:800}
+    .card p{margin:10px 0}
 
+    .meta{color:var(--secundaria-text)}
 
-/* ====== CARDS CENTRADOS (aplica em TODOS os cards) ====== */
-.card{background:var(--branco);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--pad-card);border:1px solid var(--secundaria);
-display:flex;flex-direction:column;align-items:center;text-align:center}
-.card h3{margin:10px 0 8px;color:var(--destaque);font-size:clamp(1.2rem, 0.8vw + 1.05rem, 1.6rem);font-weight:800}
-.card p{margin:10px 0}
+    header.hero{position:relative;color:#fff;text-align:center;padding:calc(var(--pad-section) + 24px) 24px;
+      background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.35)), url('assets/img/hero/hero.jpg') center/cover no-repeat}
+    header.hero h1{font-weight:800;font-size:var(--fs-hero);margin:0 0 14px}
+    header.hero p{margin:0 auto 22px;max-width:1200px}
+    .kpi{display:grid;grid-template-columns:repeat(4, minmax(220px,1fr));gap:18px;margin-top:18px}
+    .kpi .box{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(6px);border-radius:16px;padding:18px}
+    .kpi strong{display:block;font-size:1rem}
+    .kpi .val{font-size:var(--fs-kpi);font-weight:800}
 
+    .status-grid{display:grid;grid-template-columns:repeat(4, minmax(280px,1fr));gap:var(--gap-xl)}
 
-.meta{color:var(--secundaria-text)}
+    /* ====== ANDAMENTO – NOVO LAYOUT EMPILHADO ====== */
+    .andamento-grid{display:grid;grid-template-columns:repeat(3, minmax(340px,1fr));gap:var(--gap-xl)}
+    .andamento-card .andamento-desc{font-size:var(--fs-body);color:var(--grafite);line-height:1.6;margin:6px 0 14px}
 
+    /* Canvas (pizza) centralizada e contida */
+    .pizza{display:block;margin:0 auto;max-width:80%;width:var(--pie-size);height:var(--pie-size)}
+    .pizza-legenda{font-size:0.95rem;color:var(--secundaria-text);margin-top:10px}
 
-header.hero{position:relative;color:#fff;text-align:center;padding:calc(var(--pad-section) + 24px) 24px;
-background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.35)), url('assets/img/hero/hero.jpg') center/cover no-repeat}
-header.hero h1{font-weight:800;font-size:var(--fs-hero);margin:0 0 14px}
-header.hero p{margin:0 auto 22px;max-width:1200px}
-.kpi{display:grid;grid-template-columns:repeat(4, minmax(220px,1fr));gap:18px;margin-top:18px}
-.kpi .box{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(6px);border-radius:16px;padding:18px}
-.kpi strong{display:block;font-size:1rem}
-.kpi .val{font-size:var(--fs-kpi);font-weight:800}
+    .video-wrap{position:relative;width:100%;padding-top:56.25%;border-radius:18px;overflow:hidden;border:1px solid var(--secundaria);margin-top:16px}
+    .video-wrap iframe,.video-wrap video{position:absolute;inset:0;width:100%;height:100%}
 
+    .timeline{background:var(--branco);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--pad-card);border:1px solid var(--secundaria)}
+    .bar{height:24px;background:var(--secundaria);border-radius:12px;overflow:hidden;margin-top:16px}
+    .bar-fill{height:100%;background:linear-gradient(90deg,var(--destaque),var(--destaque-2));width:65%}
 
-.status-grid{display:grid;grid-template-columns:repeat(4, minmax(280px,1fr));gap:var(--gap-xl)}
+    @media(max-width:1400px){
+      .status-grid{grid-template-columns:repeat(3, minmax(280px,1fr))}
+      .andamento-grid{grid-template-columns:repeat(2, minmax(320px,1fr))}
+    }
+    @media(max-width:980px){
+      .status-grid{grid-template-columns:repeat(2, minmax(260px,1fr))}
+      .andamento-grid{grid-template-columns:1fr}
+    }
 
+    footer{background:var(--branco);border-top:1px solid var(--secundaria);padding:32px 0;color:var(--secundaria-text)}
+  </style>
+</head>
+<body>
+  <!-- HERO -->
+  <header class="hero" role="banner">
+    <div class="container">
+      <h1>Atlântico Golf – Status da Obra</h1>
+      <p>Visão técnica e comercial otimizada para TV: concluídos, em execução, bloqueios, desafios, equipe e cronograma.</p>
+      <div class="kpi" aria-label="Indicadores principais">
+        <div class="box"><strong>Concluído</strong><span class="val" id="kpiDone">65%</span></div>
+        <div class="box"><strong>Em execução</strong><span class="val" id="kpiRun">35%</span></div>
+        <div class="box"><strong>Prazo base</strong><span class="val">Nov/2025</span></div>
+        <div class="box"><strong>Prazo estendido</strong><span class="val">Mai/2026</span></div>
+      </div>
+    </div>
+  </header>
 
-/* ====== ANDAMENTO – NOVO LAYOUT EMPILHADO ====== */
-.andamento-grid{display:grid;grid-template-columns:repeat(3, minmax(340px,1fr));gap:var(--gap-xl)}
-.andamento-card .andamento-desc{font-size:var(--fs-body);color:var(--grafite);line-height:1.6;margin:6px 0 14px}
+  <!-- CONCLUÍDOS -->
+  <section id="concluidos" aria-labelledby="h-concluidos">
+    <div class="container">
+      <h2 id="h-concluidos">✔ Serviços Concluídos Recentemente</h2>
+      <div class="status-grid">
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/concluidos/interruptores_tomadas.jpg" alt="Interruptores e tomadas das torres instalados e testados"/>
+          <h3>Interruptores e tomadas das torres</h3>
+          <p class="meta">Instalações finalizadas e testadas, prontas para uso.</p>
+        </article>
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/concluidos/loucas_torres.jpg" alt="Louças sanitárias instaladas nos apartamentos"/>
+          <h3>Louças das torres</h3>
+          <p class="meta">Conjunto de peças instalado e validado nos apartamentos.</p>
+        </article>
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/concluidos/hidrometros.jpg" alt="Hidrômetros posicionados e calibrados"/>
+          <h3>Hidrômetros</h3>
+          <p class="meta">Equipamentos posicionados e calibrados para aferição de consumo.</p>
+        </article>
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/concluidos/barramentos_fase1.jpg" alt="1ª etapa dos barramentos blindados concluída"/>
+          <h3>1ª etapa dos barramentos blindados</h3>
+          <p class="meta">Estruturas principais concluídas e entregues.</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
+  <!-- EM ANDAMENTO (pizzas + 3 vídeos) -->
+  <section id="andamento" aria-labelledby="h-andamento">
+    <div class="container">
+      <h2 id="h-andamento">⏳ Serviços em Andamento <span class="badge">● azul = concluído • ● vermelho = em execução</span></h2>
+      <div class="andamento-grid">
 
-/* Canvas (pizza) centralizada e contida */
-.pizza{display:block;margin:0 auto;max-width:80%;width:var(--pie-size);height:var(--pie-size)}
-.pizza-legenda{font-size:0.95rem;color:var(--secundaria-text);margin-top:10px}
+        <!-- 1/3 com vídeo -->
+        <article class="card andamento-card">
+          <img loading="lazy" src="assets/img/andamento/quadros_bombas.jpg" alt="Instalação de quadros de bombas" />
+          <h3>Instalação de quadros de bombas</h3>
+          <p class="andamento-desc">Instalação prossegue enquanto realizamos testes elétricos e hidráulicos da rede de recalque.</p>
+          <canvas class="pizza" width="240" height="240" data-done="55" aria-label="Pizza quadros de bombas 55% concluído"></canvas>
+          <div class="pizza-legenda">Concluído 55% • Restante 45%</div>
+          <div class="video-wrap" aria-label="Vídeo quadros de bombas (1 de 3)"><iframe src="https://www.youtube.com/embed/SEU_ID_AQUI" title="Vídeo quadros de bombas" frameborder="0" allowfullscreen></iframe></div>
+        </article>
 
+        <!-- 2/3 com vídeo -->
+        <article class="card andamento-card">
+          <img loading="lazy" src="assets/img/andamento/paineis_parciais.jpg" alt="Painéis parciais – ensaios e ajustes" />
+          <h3>Painéis parciais</h3>
+          <p class="andamento-desc">Instalação em andamento com fechamento de cabos alimentadores nos disjuntores gerais e ligação dos circuitos nos disjuntores parciais.</p>
+          <canvas class="pizza" width="240" height="240" data-done="35" aria-label="Pizza painéis parciais 35% concluído"></canvas>
+          <div class="pizza-legenda">Concluído 35% • Restante 65%</div>
+          <div class="video-wrap" aria-label="Vídeo painéis parciais (2 de 3)"><iframe src="https://www.youtube.com/embed/SEU_ID_AQUI" title="Vídeo painéis parciais" frameborder="0" allowfullscreen></iframe></div>
+        </article>
 
-.video-wrap{position:relative;width:100%;padding-top:56.25%;border-radius:18px;overflow:hidden;border:1px solid var(--secundaria);margin-top:16px}
-.video-wrap iframe,.video-wrap video{position:absolute;inset:0;width:100%;height:100%}
+        <!-- 3/3 com vídeo -->
+        <article class="card andamento-card">
+          <img loading="lazy" src="assets/img/andamento/alimentacao_forca.jpg" alt="Alimentação de força" />
+          <h3>Alimentação de força</h3>
+          <p class="andamento-desc">Lançamento de cabos de interligação do QGBT aos painéis parciais pelas eletrocalhas do subsolo.</p>
+          <canvas class="pizza" width="240" height="240" data-done="30" aria-label="Pizza alimentação de força 30% concluído"></canvas>
+          <div class="pizza-legenda">Concluído 30% • Restante 70%</div>
+          <div class="video-wrap" aria-label="Vídeo alimentação de força (3 de 3)"><iframe src="https://www.youtube.com/embed/SEU_ID_AQUI" title="Vídeo alimentação de força" frameborder="0" allowfullscreen></iframe></div>
+        </article>
 
+        <!-- Itens adicionais sem vídeo -->
+        <article class="card andamento-card">
+          <img loading="lazy" src="assets/img/andamento/qgbt.jpg" alt="QGBTs – Quadros Gerais de Baixa Tensão" />
+          <h3>QGBT (Quadro Geral de Baixa Tensão)</h3>
+          <p class="andamento-desc">Conexão dos alimentadores ao QGBT para suprir áreas comuns de térreo e subsolo.</p>
+          <canvas class="pizza" width="240" height="240" data-done="40" aria-label="Pizza QGBT 40% concluído"></canvas>
+          <div class="pizza-legenda">Concluído 40% • Restante 60%</div>
+        </article>
 
-.timeline{background:var(--branco);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--pad-card);border:1px solid var(--secundaria)}
-.bar{height:24px;background:var(--secundaria);border-radius:12px;overflow:hidden;margin-top:16px}
-.bar-fill{height:100%;background:linear-gradient(90deg,var(--destaque),var(--destaque-2));width:65%}
+        <article class="card andamento-card">
+          <img loading="lazy" src="assets/img/andamento/infra_forca.jpg" alt="Infraestrutura de força" />
+          <h3>Infraestrutura de força</h3>
+          <p class="andamento-desc">Lançamento de eletrocalhas para as interligações.</p>
+          <canvas class="pizza" width="240" height="240" data-done="50" aria-label="Pizza infraestrutura de força 50% concluído"></canvas>
+          <div class="pizza-legenda">Concluído 50% • Restante 50%</div>
+        </article>
+
+        <article class="card andamento-card">
+          <img loading="lazy" src="assets/img/andamento/iluminacao_externa.jpg" alt="Iluminação externa" />
+          <h3>Iluminação externa</h3>
+          <p class="andamento-desc">Execução de infraestrutura para passagem de cabos de ligação.</p>
+          <canvas class="pizza" width="240" height="240" data-done="25" aria-label="Pizza iluminação externa 25% concluído"></canvas>
+          <div class="pizza-legenda">Concluído 25% • Restante 75%</div>
+        </article>
+
+        <article class="card andamento-card">
+          <img loading="lazy" src="assets/img/andamento/ralos_terreo.jpg" alt="Redes hidráulicas de ralos do térreo" />
+          <h3>Redes hidráulicas de ralos do térreo</h3>
+          <p class="andamento-desc">Execução das redes e interligações pelo subsolo.</p>
+          <canvas class="pizza" width="240" height="240" data-done="60" aria-label="Pizza ralos térreo 60% concluído"></canvas>
+          <div class="pizza-legenda">Concluído 60% • Restante 40%</div>
+        </article>
+
+        <article class="card andamento-card">
+          <img loading="lazy" src="assets/img/andamento/metais_aptos.jpg" alt="Metais dos apartamentos" />
+          <h3>Metais dos apartamentos</h3>
+          <p class="andamento-desc">Montagem de metais premium de alto valor agregado.</p>
+          <canvas class="pizza" width="240" height="240" data-done="60" aria-label="Pizza metais 60% concluído"></canvas>
+          <div class="pizza-legenda">Concluído 60% • Restante 40%</div>
+        </article>
+
+        <article class="card andamento-card">
+          <img loading="lazy" src="assets/img/andamento/piscinas_espelhos.jpg" alt="Redes de piscinas e espelhos d’água" />
+          <h3>Redes de piscinas e espelhos d’água</h3>
+          <p class="andamento-desc">Em fase de conclusão.</p>
+          <canvas class="pizza" width="240" height="240" data-done="90" aria-label="Pizza piscinas 90% concluído"></canvas>
+          <div class="pizza-legenda">Concluído 90% • Restante 10%</div>
+        </article>
+
+        <article class="card andamento-card">
+          <img loading="lazy" src="assets/img/andamento/recalque_pluvial_subsolo.jpg" alt="Redes de recalque de águas pluviais do subsolo" />
+          <h3>Redes de recalque de águas pluviais do subsolo</h3>
+          <p class="andamento-desc">Instalação das bombas e linhas principais.</p>
+          <canvas class="pizza" width="240" height="240" data-done="30" aria-label="Pizza recalque 30% concluído"></canvas>
+          <div class="pizza-legenda">Concluído 30% • Restante 70%</div>
+        </article>
+
+        <article class="card andamento-card">
+          <img loading="lazy" src="assets/img/andamento/entregas_qualidade.jpg" alt="Entregas de apartamentos para qualidade" />
+          <h3>Entregas de apartamentos para qualidade</h3>
+          <p class="andamento-desc">Unidades em processo de vistoria técnica.</p>
+          <canvas class="pizza" width="240" height="240" data-done="48" aria-label="Pizza entregas qualidade 48% concluído"></canvas>
+          <div class="pizza-legenda">Concluído 48% • Restante 52%</div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PRÓXIMOS SERVIÇOS -->
+  <section id="proximos" aria-labelledby="h-proximos">
+    <div class="container">
+      <h2 id="h-proximos">➡️ Próximos Serviços</h2>
+      <div class="status-grid">
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/proximos/barramentos_fase2.jpg" alt="2ª etapa dos barramentos blindados" />
+          <h3>2ª etapa dos barramentos blindados</h3>
+          <p class="meta">Programada, aguardando peças de ajuste.</p>
+        </article>
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/proximos/padroes_light.jpg" alt="Instalação de painéis padrão Light" />
+          <h3>Instalação de painéis padrão Light</h3>
+          <p class="meta">Em fase de mobilização.</p>
+        </article>
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/proximos/alimentadores_entrada.jpg" alt="Alimentadores de entrada de energia" />
+          <h3>Alimentadores de entrada de energia</h3>
+          <p class="meta">Preparação para lançamento.</p>
+        </article>
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/proximos/ligacao_bombas.jpg" alt="Ligações de bombas" />
+          <h3>Ligações de bombas</h3>
+          <p class="meta">Conexões elétricas e hidráulicas a executar.</p>
+        </article>
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/proximos/interligacao_reservatorios.jpg" alt="Interligação dos reservatórios inferiores" />
+          <h3>Interligação dos reservatórios inferiores</h3>
+          <p class="meta">Interligação de 45 reservatórios de água potável no subsolo para abastecer todo o condomínio.</p>
+        </article>
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/proximos/spda_torres.jpg" alt="SPDA das torres" />
+          <h3>SPDA das torres</h3>
+          <p class="meta">Etapa final de proteção contra descargas atmosféricas.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOQUEADOS -->
+  <section id="bloqueados" aria-labelledby="h-bloqueados">
+    <div class="container">
+      <h2 id="h-bloqueados">⛔ Serviços Bloqueados (Patrimar)</h2>
+      <div class="status-grid">
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/bloqueados/cabos_240mm.jpg" alt="Compra de cabos 240 mm² aguardando" />
+          <h3>Cabos 240 mm²</h3>
+          <p class="meta">Dependência de compra pelo cliente.</p>
+        </article>
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/bloqueados/barramentos_sem_previsao.jpg" alt="Barramentos blindados sem previsão" />
+          <h3>Barramentos blindados</h3>
+          <p class="meta">Entrega sem previsão.</p>
+        </article>
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/bloqueados/entrada_energia_componentes.jpg" alt="Definição de componentes para entrada de energia" />
+          <h3>Entrada de energia</h3>
+          <p class="meta">Definição de componentes pendente.</p>
+        </article>
+        <article class="card status-card">
+          <img loading="lazy" src="assets/img/bloqueados/furtos.png" alt="Aguardando definição de aditivos" />
+          <h3>Furto de cabos</h3>
+          <p class="meta">Aguardando definição de aditivos.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESAFIOS -->
+  <section id="desafios" aria-labelledby="h-desafios">
+    <div class="container">
+      <h2 id="h-desafios">⚠️ Desafios Atuais</h2>
+      <article class="card">
+        <ul>
+          <li>Indefinições do cliente atrasando suprimentos críticos</li>
+          <li>Roubo de cabos</li>
+          <li>Retrabalhos em geral</li>
+          <li>Recolocação de tomadas e itens furtados</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- EQUIPE -->
+  <section id="equipe" aria-labelledby="h-equipe">
+    <div class="container">
+      <h2 id="h-equipe">👷 Time Atual</h2>
+      <article class="card">
+        <ul>
+          <li>55 profissionais na equipe direta e 10 indiretos</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- CRONOGRAMA -->
+  <section id="cronograma" aria-labelledby="h-cronograma">
+    <div class="container">
+      <h2 id="h-cronograma">📅 Cronograma</h2>
+      <div class="timeline">
+        <div class="meta">Término previsto: <strong>Nov/2025</strong> • Possível extensão: <strong>Mai/2026</strong></div>
+        <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="65" aria-label="Progresso global 65%">
+          <div class="bar-fill" style="width:65%"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <small>© <span id="yr"></span> System Engenharia — Status da Obra Atlântico Golf.</small>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- PIZZAS -->
+  <script>
+    function getCss(varName){
+      return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    }
+
+    const centerText = {
+      id: 'centerText',
+      afterDraw(chart){
+        const {ctx} = chart; const ds = chart.data.datasets?.[0]; if(!ds) return;
+        const done = ds.data?.[0] ?? 0;
+        const meta = chart.getDatasetMeta(0); if(!meta?.data?.[0]) return;
+        const {x,y} = meta.data[0];
+        ctx.save();
+        ctx.font = '700 28px Montserrat, Arial, sans-serif';
+        ctx.fillStyle = '#2a2f36';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(done + '%', x, y);
+        ctx.restore();
+      }
+    };
+
+    const pieOpts = {
+      responsive: false,
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: (ctx)=> `${ctx.label}: ${ctx.parsed}%` } }
+      },
+      elements: { arc: { borderColor: '#fff', borderWidth: 3 } },
+      animation: { animateRotate: true, duration: 900 }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('canvas.pizza').forEach(cv => {
+        const done = Number(cv.dataset.done || 0);
+        const restante = Math.max(0, 100 - done);
+        new Chart(cv.getContext('2d'), {
+          type: 'pie',
+          data: {
+            labels: ['Concluído','Em execução'],
+            datasets: [{
+              data: [done, restante],
+              backgroundColor: [getCss('--pie-concluido'), getCss('--pie-execucao')]
+            }]
+          },
+          options: pieOpts,
+          plugins: [centerText]
+        });
+      });
+    });
+  </script>
+</body>
 </html>
-
-/* Canvas (pizza) centralizada e contida */
-
-
-
