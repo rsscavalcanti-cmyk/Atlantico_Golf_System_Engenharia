@@ -68,9 +68,6 @@
     .pizza{display:block;margin:0 auto;max-width:80%;width:var(--pie-size);height:var(--pie-size)}
     .pizza-legenda{font-size:0.95rem;color:var(--secundaria-text);margin-top:10px}
 
-    .video-wrap{position:relative;width:100%;padding-top:56.25%;border-radius:18px;overflow:hidden;border:1px solid var(--secundaria);margin-top:16px}
-    .video-wrap iframe,.video-wrap video{position:absolute;inset:0;width:100%;height:100%}
-
     .timeline{background:var(--branco);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--pad-card);border:1px solid var(--secundaria)}
     .bar{height:24px;background:var(--secundaria);border-radius:12px;overflow:hidden;margin-top:16px}
     .bar-fill{height:100%;background:linear-gradient(90deg,var(--destaque),var(--destaque-2));width:65%}
@@ -85,34 +82,11 @@
     }
 
     footer{background:var(--branco);border-top:1px solid var(--secundaria);padding:32px 0;color:var(--secundaria-text)}
-    /* várias regras já existentes ... */
 
     /* ==== Correção de alinhamento só para #desafios ==== */
-    #desafios .card{
-      text-align: left;
-      align-items: flex-start;
-    }
-
-    #desafios .card ul{
-      list-style: disc;
-      list-style-position: outside;
-      margin: 0 0 0 1.25rem;
-      padding-left: 0.25rem;
-    }
-
-    #desafios .card li{
-      margin: .35rem 0;
-    }
-    /* Ajuste solicitado: remover espaço extra dos 3 vídeos */
-.video-wrap {
-position: relative;
-width: 100%;
-padding-top: 56.25%;
-border-radius: 18px;
-overflow: hidden;
-border: 1px solid var(--secundaria);
-margin-top: 0; /* alterado de 16px para 0 para eliminar espaço extra */
-}
+    #desafios .card{ text-align:left; align-items:flex-start; }
+    #desafios .card ul{ list-style:disc; list-style-position:outside; margin:0 0 0 1.25rem; padding-left:0.25rem; }
+    #desafios .card li{ margin:.35rem 0; }
   </style>
 </head>
 <body>
@@ -159,40 +133,33 @@ margin-top: 0; /* alterado de 16px para 0 para eliminar espaço extra */
     </div>
   </section>
 
-  <!-- EM ANDAMENTO (pizzas + 3 vídeos) -->
+  <!-- EM ANDAMENTO (pizzas, sem vídeos) -->
   <section id="andamento" aria-labelledby="h-andamento">
     <div class="container">
-      <h2 id="h-andamento">⏳ Serviços em Andamento </h2>
+      <h2 id="h-andamento">⏳ Serviços em Andamento</h2>
       <div class="andamento-grid">
-
-        <!-- 1/3 com vídeo -->
         <article class="card andamento-card">
           <img loading="lazy" src="assets/img/andamento/quadros_bombas.jpg" alt="Instalação de quadros de bombas" />
           <h3>Instalação de quadros de bombas</h3>
           <p class="andamento-desc">Instalação prossegue enquanto realizamos testes elétricos e hidráulicos da rede de recalque.</p>
           <canvas class="pizza" width="240" height="240" data-done="55" aria-label="Pizza quadros de bombas 55% concluído"></canvas>
           <div class="pizza-legenda">Concluído 55% • Restante 45%</div>
-          <div class="video-wrap" aria-label="Vídeo quadros de bombas (1 de 3)"><iframe src="https://www.youtube.com/embed/SEU_ID_AQUI" title="Vídeo quadros de bombas" frameborder="0" allowfullscreen></iframe></div>
         </article>
 
-        <!-- 2/3 com vídeo -->
         <article class="card andamento-card">
           <img loading="lazy" src="assets/img/andamento/paineis_parciais.jpg" alt="Painéis parciais – ensaios e ajustes" />
           <h3>Painéis parciais</h3>
           <p class="andamento-desc">Instalação em andamento com fechamento de cabos alimentadores nos disjuntores gerais e ligação dos circuitos nos disjuntores parciais.</p>
           <canvas class="pizza" width="240" height="240" data-done="35" aria-label="Pizza painéis parciais 35% concluído"></canvas>
           <div class="pizza-legenda">Concluído 35% • Restante 65%</div>
-          <div class="video-wrap" aria-label="Vídeo painéis parciais (2 de 3)"><iframe src="https://www.youtube.com/embed/SEU_ID_AQUI" title="Vídeo painéis parciais" frameborder="0" allowfullscreen></iframe></div>
         </article>
 
-        <!-- 3/3 com vídeo -->
         <article class="card andamento-card">
           <img loading="lazy" src="assets/img/andamento/alimentacao_forca.jpg" alt="Alimentação de força" />
           <h3>Alimentação de força</h3>
           <p class="andamento-desc">Lançamento de cabos de interligação do QGBT aos painéis parciais pelas eletrocalhas do subsolo.</p>
           <canvas class="pizza" width="240" height="240" data-done="30" aria-label="Pizza alimentação de força 30% concluído"></canvas>
           <div class="pizza-legenda">Concluído 30% • Restante 70%</div>
-          <div class="video-wrap" aria-label="Vídeo alimentação de força (3 de 3)"><iframe src="https://www.youtube.com/embed/SEU_ID_AQUI" title="Vídeo alimentação de força" frameborder="0" allowfullscreen></iframe></div>
         </article>
 
         <!-- Itens adicionais sem vídeo -->
@@ -255,7 +222,7 @@ margin-top: 0; /* alterado de 16px para 0 para eliminar espaço extra */
         <article class="card andamento-card">
           <img loading="lazy" src="assets/img/andamento/entregas_qualidade.jpg" alt="Entregas de apartamentos para qualidade" />
           <h3>Entregas de apartamentos para qualidade</h3>
-          <p class="andamento-desc">Vistoria técnica rigorosa em andamento pela equipe de qualidade externa da Patrimar..</p>
+          <p class="andamento-desc">Vistoria técnica rigorosa em andamento pela equipe de qualidade externa da Patrimar.</p>
           <canvas class="pizza" width="240" height="240" data-done="48" aria-label="Pizza entregas qualidade 48% concluído"></canvas>
           <div class="pizza-legenda">Concluído 48% • Restante 52%</div>
         </article>
